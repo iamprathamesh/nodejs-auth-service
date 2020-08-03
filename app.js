@@ -15,4 +15,12 @@ mongoose.connect(appProperties.mongoDBUrl, { useNewUrlParser: true, useUnifiedTo
 
 app.use('/auth', loginRouter);
 
+app.use((error, req, res, next) => {
+    res.status(error.status || 500).json({
+        error: {
+            message: error.message
+        }
+    });
+});
+
 module.exports = app;
