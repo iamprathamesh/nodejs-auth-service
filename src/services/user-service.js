@@ -4,10 +4,21 @@ class UserService {
 
     constructor() {}
 
-    static getUser(email) {
+    static getUser(email, password) {
         return new Promise((resolve, reject) => {
-            //login code
-            userModel
+            userModel.findOne({email, password}, (error, result) => {
+                if(error) {
+                    reject(error);
+                } else {
+                    if(result == null) {
+                        const err = new Error('Wrong email/password');
+                        err.status = 422;
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            });
         });
     }
 
